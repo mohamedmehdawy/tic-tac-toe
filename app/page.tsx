@@ -1,14 +1,32 @@
 'use client';
 import { useState } from "react";
 export default function Board() {
+
+  // define x is next or not state
+  const [xIsNext, setXIsNext] = useState(true);
+  // define squares state
   const [squares, setSquares] = useState(Array(9).fill(""));
 
   function handelClick(i: number) {
+    // check if our current square has value or not
+    if(squares[i]) return;
+    
+    // create copy of our array
     const newArray = squares.slice();
 
-    newArray[i] = "X";
+    // check x boolean value
+    if (xIsNext) {
+      newArray[i] = "X";
 
+    } else {
+      newArray[i] = "O";
+    }
+
+    // set new array
     setSquares(newArray);
+
+    // change x is next
+    setXIsNext(!xIsNext);
   }
   return (
     <>
