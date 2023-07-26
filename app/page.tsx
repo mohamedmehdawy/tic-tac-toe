@@ -1,5 +1,5 @@
 'use client';
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
 export default function Board() {
 
   // define x is next or not state
@@ -9,8 +9,8 @@ export default function Board() {
 
   function handelClick(i: number) {
     // check if our current square has value or not
-    if(squares[i]) return;
-    
+    if(squares[i] || calcWinner(squares)) return;
+
     // create copy of our array
     const newArray = squares.slice();
 
@@ -28,8 +28,19 @@ export default function Board() {
     // change x is next
     setXIsNext(!xIsNext);
   }
+
+  // handel winner
+  const winner = calcWinner(squares);
+  let status;
+
+  if(winner) {
+    status = `winner is: ${winner}`;
+  } else {
+    status = `next player is: ${xIsNext? 'X':'O'}`;
+  }
   return (
     <>
+      <section className="status">{ status }</section>
       <section className="board-row">
         <Square value={squares[0]} onSquareClick={() => handelClick(0)}/>
         <Square value={squares[1]} onSquareClick={() => handelClick(1)}/>
@@ -52,8 +63,35 @@ export default function Board() {
   )
 }
 
-function Square({ value, onSquareClick }) {
+function Square({ value, onSquareClick }: {
+  value: string;
+  onSquareClick: MouseEventHandler<HTMLButtonElement>
+}) {
 
   return <button onClick={onSquareClick} className="square">{ value }</button>;
 
+}
+
+function calcWinner(squares: string[]): null | string {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
+
+  // check is the squares match any line
+  for(let i = 0; i < lines.length; i++) {
+    // set current 3 points
+    const [a, b, c] = lines[i];
+
+    if(squares[a] && squares[a] == squares[b] && squares[a] == squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
 }
