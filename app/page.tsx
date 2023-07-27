@@ -1,11 +1,41 @@
 'use client';
 import { MouseEventHandler, useState } from "react";
-export default function Board() {
 
+export default function Game() {
   // define x is next or not state
   const [xIsNext, setXIsNext] = useState(true);
-  // define squares state
-  const [squares, setSquares] = useState(Array(9).fill(""));
+
+  // define game history
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+
+  // current squares
+  const currentSquares = history[history.length - 1];
+
+  // handel play
+  function handelPlay(nextSquares: string[]) {
+    setHistory([...history, nextSquares])
+
+    setXIsNext(!xIsNext);
+  }
+  return (
+    <>
+      <section className="game">
+        <section className="game-board">
+          <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handelPlay}/>
+        </section>
+        <section className="game-info">
+          <ol>{/* to do  */}</ol>
+        </section>
+      </section>
+    </>
+  )
+}
+function Board({xIsNext, squares, onPlay}: {
+  xIsNext: boolean;
+  squares: string[];
+  onPlay: Function
+}) {
+
 
   function handelClick(i: number) {
     // check if our current square has value or not
@@ -22,11 +52,8 @@ export default function Board() {
       newArray[i] = "O";
     }
 
-    // set new array
-    setSquares(newArray);
-
-    // change x is next
-    setXIsNext(!xIsNext);
+    // handel play
+    onPlay(newArray);
   }
 
   // handel winner
