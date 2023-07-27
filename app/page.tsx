@@ -17,6 +17,24 @@ export default function Game() {
 
     setXIsNext(!xIsNext);
   }
+  
+  // moves
+  const moves = history.map((squares, move) => {
+    // description message
+    let description;
+
+    if (move > 0) {
+      description = `Go move to # ${move}`
+    } else {
+      description = `Go to start game`
+    }
+
+    return (
+      <li>
+        <button>{ description }</button>
+      </li>
+    )
+  });
   return (
     <>
       <section className="game">
@@ -24,7 +42,7 @@ export default function Game() {
           <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handelPlay}/>
         </section>
         <section className="game-info">
-          <ol>{/* to do  */}</ol>
+          <ol>{ moves }</ol>
         </section>
       </section>
     </>
