@@ -6,18 +6,37 @@ export default function Game() {
   const [xIsNext, setXIsNext] = useState(true);
 
   // define game history
-  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [history, setHistory] = useState([Array(9).fill("")]);
+
+  // current move
+  const [currentMove, setCurrentMove] = useState(0);
 
   // current squares
-  const currentSquares = history[history.length - 1];
+  const currentSquares = history[currentMove];
 
   // handel play
   function handelPlay(nextSquares: string[]) {
-    setHistory([...history, nextSquares])
+    // create new history
+    const newHistory = [...history.slice(0, currentMove + 1), nextSquares];
 
+    // set history
+    setHistory(newHistory);
+
+    // set current move less than new history - 1, to arrive to correct index
+    setCurrentMove(newHistory.length - 1);
+
+    // set x is next value
     setXIsNext(!xIsNext);
   }
   
+  // jump to
+  function jumpTo(nextMove: number) {
+    // change current move
+    setCurrentMove(nextMove);
+
+    // handel x is next
+    setXIsNext(nextMove % 2 == 0);
+  }
   // moves
   const moves = history.map((squares, move) => {
     // description message
@@ -30,8 +49,8 @@ export default function Game() {
     }
 
     return (
-      <li>
-        <button>{ description }</button>
+      <li key={move}>
+        <button onClick={() => jumpTo(move)}>{ description }</button>
       </li>
     )
   });
