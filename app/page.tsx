@@ -2,8 +2,7 @@
 import { MouseEventHandler, useState } from "react";
 
 export default function Game() {
-  // define x is next or not state
-  const [xIsNext, setXIsNext] = useState(true);
+
 
   // define game history
   const [history, setHistory] = useState([Array(9).fill("")]);
@@ -11,6 +10,8 @@ export default function Game() {
   // current move
   const [currentMove, setCurrentMove] = useState(0);
 
+  // define x is next or not state
+  const xIsNext = currentMove % 2 == 0;
   // current squares
   const currentSquares = history[currentMove];
 
@@ -25,8 +26,6 @@ export default function Game() {
     // set current move less than new history - 1, to arrive to correct index
     setCurrentMove(newHistory.length - 1);
 
-    // set x is next value
-    setXIsNext(!xIsNext);
   }
   
   // jump to
@@ -34,8 +33,6 @@ export default function Game() {
     // change current move
     setCurrentMove(nextMove);
 
-    // handel x is next
-    setXIsNext(nextMove % 2 == 0);
   }
   // moves
   const moves = history.map((squares, move) => {
