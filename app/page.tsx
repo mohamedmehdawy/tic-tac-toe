@@ -105,30 +105,29 @@ function Board({xIsNext, squares, onPlay}: {
     status = `next player is: ${xIsNext? 'X':'O'}`;
   }
 
-  
+  const boards = Array(3);
+  let currentSqaure = 0;
+  for(let i = 0; i < 3; i++) {
+    boards[i] = [];
+    for(let j = 0; j < 3; j++) {
+      const current = currentSqaure;
+      boards[i].push(<Square key={currentSqaure} value={squares[currentSqaure]} onSquareClick={() => handelClick(current)}/>)
+      currentSqaure = currentSqaure + 1;
 
+    }
+    boards[i] = (
+      <section className="board-row" key={i}>
+        {boards[i]}
+      </section>
+    )
+  }
+  
 
   
   return (
     <>
       <section className="status">{ status }</section>
-      <br/>
-      <section className="board-row">
-        <Square value={squares[0]} onSquareClick={() => handelClick(0)}/>
-        <Square value={squares[1]} onSquareClick={() => handelClick(1)}/>
-        <Square value={squares[2]} onSquareClick={() => handelClick(2)}/>
-
-      </section>
-      <section className="board-row">
-        <Square value={squares[3]} onSquareClick={() => handelClick(3)}/>
-        <Square value={squares[4]} onSquareClick={() => handelClick(4)}/>
-        <Square value={squares[5]} onSquareClick={() => handelClick(5)}/>
-      </section>
-      <section className="board-row">
-        <Square value={squares[6]} onSquareClick={() => handelClick(6)}/>
-        <Square value={squares[7]} onSquareClick={() => handelClick(7)}/>
-        <Square value={squares[8]} onSquareClick={() => handelClick(8)}/>
-      </section>
+      {boards}
     </>
 
 
