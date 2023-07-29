@@ -112,7 +112,7 @@ function Board({xIsNext, squares, onPlay}: {
     for(let j = 0; j < 3; j++) {
       const current = currentSqaure;
       boards[i].push(<Square key={currentSqaure} value={squares[currentSqaure]} onSquareClick={() => handelClick(current)}/>)
-      currentSqaure = currentSqaure + 1;
+      currentSqaure += 1;
 
     }
     boards[i] = (
