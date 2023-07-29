@@ -58,6 +58,7 @@ export default function Game() {
           <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handelPlay}/>
         </section>
         <section className="game-info">
+          <p>you are move # { currentMove }</p>
           <ol>{ moves }</ol>
         </section>
       </section>
@@ -72,6 +73,7 @@ function Board({xIsNext, squares, onPlay}: {
 
 
   function handelClick(i: number) {
+    console.log(`square is: ${i}`)
     // check if our current square has value or not
     if(squares[i] || calcWinner(squares)) return;
 
@@ -91,17 +93,26 @@ function Board({xIsNext, squares, onPlay}: {
   }
 
   // handel winner
-  const winner = calcWinner(squares);
+  const winnerData = calcWinner(squares);
+
+  const winner = winnerData ? winnerData[0] : null;
   let status;
 
   if(winner) {
     status = `winner is: ${winner}`;
+    
   } else {
     status = `next player is: ${xIsNext? 'X':'O'}`;
   }
+
+  
+
+
+  
   return (
     <>
       <section className="status">{ status }</section>
+      <br/>
       <section className="board-row">
         <Square value={squares[0]} onSquareClick={() => handelClick(0)}/>
         <Square value={squares[1]} onSquareClick={() => handelClick(1)}/>
@@ -133,7 +144,7 @@ function Square({ value, onSquareClick }: {
 
 }
 
-function calcWinner(squares: string[]): null | string {
+function calcWinner(squares: string[]) {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -151,7 +162,7 @@ function calcWinner(squares: string[]): null | string {
     const [a, b, c] = lines[i];
 
     if(squares[a] && squares[a] == squares[b] && squares[a] == squares[c]) {
-      return squares[a];
+      return [squares[a], [a,b,c]];
     }
   }
   return null;
